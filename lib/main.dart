@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-void main() {
-  runApp(const MainApp());
+main() {
+runApp(
+  GetMaterialApp(
+    initialRoute: "/",
+    getPages: [
+      GetPage(name: "/", page: () => StepScreen()),
+      GetPage(name: "/steps/:stepId", page: () => StepScreen()),
+    ],
+  ),
+);
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+class StepScreen extends StatelessWidget {
+@override
+Widget build(BuildContext context) {
+  int step = Get.parameters["stepId"] != null ? int.parse(Get.parameters["stepId"]!) : 0;
+  return Scaffold(
+    body: Center(
+      child: OutlinedButton(
+        onPressed: () => Get.toNamed("/steps/${step + 1}"),
+        child: Text("To step ${step + 1}"),
       ),
-    );
-  }
+    ),
+  );
+}
 }
